@@ -144,19 +144,7 @@ sipClientFactory.newClient = function (config) {
       clearText = basicCrypto.decrypt(decodedToken.payloadObj.data, config.appSecret);
     }
 
-    try {
-      userData = JSON.parse(clearText);
-    } catch (e) {
-      /* Ignore */
-      console.log('Error parsing decrypted string to user data: ' + e.message);
-    }
-
-    const decryptedPayload = {
-        data: userData,
-        userId: payload.userId,
-    };
-
-    return decryptedPayload;
+    return clearText;
   }
   /**
    * Exchange authorization code in the form of a JWT Token for the user data
@@ -215,6 +203,7 @@ sipClientFactory.newClient = function (config) {
   };
 
   apigClient.exchangeCode = exchangeCode;
+  apigClient.verifyAndDecrypt = verifyAndDecrypt;
 
   return apigClient;
 };

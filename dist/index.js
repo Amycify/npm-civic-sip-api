@@ -233,22 +233,11 @@ sipClientFactory.newClient = function (config) {
       clearText = basicCrypto.decrypt(decodedToken.payloadObj.data, config.appSecret);
     }
 
-    try {
-      userData = JSON.parse(clearText);
-    } catch (e) {
-      /* Ignore */
-      console.log('Error parsing decrypted string to user data: ' + e.message);
-    }
-
-    var decryptedPayload = {
-      data: userData,
-      userId: payload.userId
-    };
-
-    return decryptedPayload;
+    return clearText;
   };
 
   apigClient.exchangeCode = exchangeCode;
+  apigClient.verifyAndDecrypt = verifyAndDecrypt;
 
   return apigClient;
 };
